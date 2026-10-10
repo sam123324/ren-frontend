@@ -1,5 +1,11 @@
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://ren-backend-omid.onrender.com').replace(/\/+$/, '');
+
+function buildUrl(path) {
+  return `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
 async function request(path, options = {}) {
-  const response = await fetch(path, {
+  const response = await fetch(buildUrl(path), {
     credentials: 'include',
     ...options,
     headers: { ...(options.body && !(options.body instanceof FormData) ? { 'Content-Type': 'application/json' } : {}), ...(options.headers || {}) },
